@@ -13,6 +13,7 @@ import {
 
 import BudgetControl from './src/components/BudgetControl';
 import ExpensesList from './src/components/ExpensesList';
+import Filter from './src/components/Filter';
 import FormSpent from './src/components/FormSpent';
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
@@ -26,6 +27,8 @@ const App = () => {
   const [expenses, setExpenses] = useState([]);
   const [modal, setModal] = useState(false);
   const [expense, setExpense] = useState({});
+  const [filter, setFilter] = useState('');
+  const [expensesFiltered, setExpensesFilteres] = useState([]);
 
   const handleNewBudget = budget => {
     if (Number(budget) > 0) {
@@ -68,8 +71,8 @@ const App = () => {
               expenseState => expenseState.id !== id,
             );
             setExpenses(expensesEdited);
-            setModal(!Modal)
-            setExpense({})
+            setModal(!Modal);
+            setExpense({});
           },
         },
       ],
@@ -92,13 +95,22 @@ const App = () => {
             <BudgetControl budget={budget} expenses={expenses} />
           )}
         </View>
-
         {isValidBudget && (
-          <ExpensesList
-            expenses={expenses}
-            setModal={setModal}
-            setExpense={setExpense}
-          />
+          <>
+            <Filter
+              setFilter={setFilter}
+              filter={filter}
+              expenses={expenses}
+              setExpensesFilteres={setExpensesFilteres}
+            />
+            <ExpensesList
+              expenses={expenses}
+              setModal={setModal}
+              setExpense={setExpense}
+              filter={filter}
+              expensesFiltered={expensesFiltered}
+            />
+          </>
         )}
       </ScrollView>
 

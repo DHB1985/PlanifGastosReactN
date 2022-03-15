@@ -40,11 +40,13 @@ const FormSpent = ({
           <Text style={styles.btnText}>Cancelar</Text>
         </Pressable>
 
-        <Pressable
-          style={[styles.btn, styles.btnDelete]}
-          onLongPress={() => deleteExpense(id)}>
-          <Text style={styles.btnText}>Eliminar</Text>
-        </Pressable>
+        {!!id && (
+          <Pressable
+            style={[styles.btn, styles.btnDelete]}
+            onLongPress={() => deleteExpense(id)}>
+            <Text style={styles.btnText}>Eliminar</Text>
+          </Pressable>
+        )}
       </View>
 
       <View style={styles.form}>

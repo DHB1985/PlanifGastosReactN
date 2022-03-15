@@ -20,12 +20,13 @@ const BudgetControl = ({budget, expenses}) => {
 
     const newPorcentage = (totalExpenses * 100) / budget;
 
-    setTimeout(() => {
-      setPorcentage(newPorcentage);
-    }, 1000);
     
     setSpent(totalExpenses);
     setAvailable(totalAvailable);
+
+    setTimeout(() => {
+      setPorcentage(newPorcentage);
+    }, 1000);
   }, [expenses]);
 
   return (
