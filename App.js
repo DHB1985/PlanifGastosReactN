@@ -55,6 +55,27 @@ const App = () => {
     setModal(!modal);
   };
 
+  const deleteExpense = id => {
+    Alert.alert(
+      '¿Deseas eliminar este gasto?',
+      'El gasto no podrá recuperarse.',
+      [
+        {text: 'No.', style: 'cancel'},
+        {
+          text: 'Si, Eliminar.',
+          onPress: () => {
+            const expensesEdited = expenses.filter(
+              expenseState => expenseState.id !== id,
+            );
+            setExpenses(expensesEdited);
+            setModal(!Modal)
+            setExpense({})
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -91,12 +112,13 @@ const App = () => {
             handleExpense={handleExpense}
             expense={expense}
             setExpense={setExpense}
+            deleteExpense={deleteExpense}
           />
         </Modal>
       )}
 
       {isValidBudget && (
-        <Pressable onPress={() => setModal(!modal)}>
+        <Pressable style={styles.pressable} onPress={() => setModal(!modal)}>
           <Image
             style={styles.image}
             source={require('./src/img/nuevo-gasto.png')}

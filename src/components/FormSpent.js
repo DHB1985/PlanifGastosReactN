@@ -3,7 +3,13 @@ import {Pressable, SafeAreaView, Text, TextInput, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import styles from '../styles/FormSpentStyles';
 
-const FormSpent = ({setModal, handleExpense, setExpense, expense}) => {
+const FormSpent = ({
+  setModal,
+  handleExpense,
+  setExpense,
+  expense,
+  deleteExpense,
+}) => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
@@ -27,9 +33,17 @@ const FormSpent = ({setModal, handleExpense, setExpense, expense}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Pressable style={styles.btnCancel} onLongPress={handleCancel}>
-          <Text style={styles.btnCancelText}>Cancelar</Text>
+      <View style={styles.btnContainer}>
+        <Pressable
+          style={[styles.btn, styles.btnCancel]}
+          onLongPress={handleCancel}>
+          <Text style={styles.btnText}>Cancelar</Text>
+        </Pressable>
+
+        <Pressable
+          style={[styles.btn, styles.btnDelete]}
+          onLongPress={() => deleteExpense(id)}>
+          <Text style={styles.btnText}>Eliminar</Text>
         </Pressable>
       </View>
 
