@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import globalStyles from './index';
 
@@ -10,11 +11,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   img: {
-    width: 250,
-    height: 250,
+    width:  180,//wp('50%'),
+    height: 180,//hp('30.2%'),
   },
   textContainer: {
-    marginTop: 50,
+    marginTop: 30,
   },
   value: {
     fontSize: 20,
