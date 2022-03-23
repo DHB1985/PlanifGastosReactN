@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Image} from 'react-native';
+import {Text, View, Pressable} from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
 
 import {amountFormat} from '../utils/utils';
 
 import styles from '../styles/BudgetControlStyles';
 
-const BudgetControl = ({budget, expenses}) => {
+const BudgetControl = ({budget, expenses, resetApp}) => {
   const [available, setAvailable] = useState(0);
   const [spent, setSpent] = useState(0);
   const [porcentage, setPorcentage] = useState(0);
@@ -20,7 +20,6 @@ const BudgetControl = ({budget, expenses}) => {
 
     const newPorcentage = (totalExpenses * 100) / budget;
 
-    
     setSpent(totalExpenses);
     setAvailable(totalAvailable);
 
@@ -50,6 +49,10 @@ const BudgetControl = ({budget, expenses}) => {
       </View>
 
       <View style={styles.textContainer}>
+        <Pressable onLongPress={resetApp} style={styles.button}>
+          <Text style={styles.textBtn}>Reiniciar App</Text>
+        </Pressable>
+
         <Text style={styles.value}>
           <Text style={styles.label}>Presupuesto: {''} </Text>
 

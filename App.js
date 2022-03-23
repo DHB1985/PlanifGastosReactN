@@ -1,16 +1,7 @@
-import React, {useState} from 'react';
-import {
-  Alert,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  Image,
-  Modal,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Alert, ScrollView, View, Pressable, Image, Modal} from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BudgetControl from './src/components/BudgetControl';
 import ExpensesList from './src/components/ExpensesList';
 import Filter from './src/components/Filter';
@@ -29,6 +20,65 @@ const App = () => {
   const [expense, setExpense] = useState({});
   const [filter, setFilter] = useState('');
   const [expensesFiltered, setExpensesFilteres] = useState([]);
+
+  useEffect(() => {
+    const getBudgetStorage = async () => {
+      try {
+        const budgetSorage =
+          (await AsyncStorage.getItem('planner_budget')) ?? 0;
+
+        if (budgetSorage > 0) {
+          setBudget(budgetSorage);
+          setIsValidBudget(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBudgetStorage();
+  }, []);
+
+  useEffect(() => {
+    const saveExpensesStorage = async () => {
+      try {
+        await AsyncStorage.setItem(
+          'planner_expenses',
+          JSON.stringify(expenses),
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    saveExpensesStorage();
+  }, [expenses]);
+
+  useEffect(() => {
+    const getExpensesStorage = () => {
+      try {
+        const expensesStorage = await AsyncStorage.getItem('planner_expenses');
+
+        setExpenses(expensesStorage ? JSON.parse(expensesStorage) : []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getExpensesStorage();
+  }, []);
+
+  useEffect(() => {
+    if (isValidBudget) {
+      const saveAsSt = async () => {
+        try {
+          await AsyncStorage.setItem('planner_budget', budget);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      saveAsSt();
+    }
+  }, [isValidBudget]);
 
   const handleNewBudget = budget => {
     if (Number(budget) > 0) {
@@ -79,6 +129,30 @@ const App = () => {
     );
   };
 
+  const resetApp = () => {
+    Alert.alert(
+      'Deseas resetear la App?',
+      'Esto eliminará el presupuesto y los gastos',
+      [
+        {text: 'No', style: 'cancel'},
+        {
+          text: 'Si, Eliminar',
+          onPress: async () => {
+            try {
+              await AsyncStorage.clear();
+
+              setIsValidBudget(false);
+              setBudget(0);
+              setExpenses([]);
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -92,7 +166,11 @@ const App = () => {
               budget={budget}
             />
           ) : (
-            <BudgetControl budget={budget} expenses={expenses} />
+            <BudgetControl
+              budget={budget}
+              expenses={expenses}
+              resetApp={resetApp}
+            />
           )}
         </View>
         {isValidBudget && (

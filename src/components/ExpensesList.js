@@ -33,10 +33,9 @@ const ExpensesList = ({
             />
           ))}
 
-      {expenses.length === 0 || (expensesFiltered === 0 && !!filter) && (
+      {(expenses.length === 0 || (expensesFiltered === 0 && !!filter)) && (
         <Text style={styles.noExpenses}>No hay Gastos</Text>
       )}
-
     </View>
   );
 };
